@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.checkininfo</groupId>
+    <artifactId>de.checkininfo</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <eclipse.plugins>C:/Users/maddi/.p2/pool/plugins</eclipse.plugins>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>swt</artifactId>
+            <version>local</version>
+            <scope>system</scope>
+            <systemPath>${eclipse.plugins}/org.eclipse.swt.win32.win32.x86_64_3.124.200.v20231113-1355.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+            <version>local</version>
+            <scope>system</scope>
+            <systemPath>${eclipse.plugins}/org.eclipse.jface_3.32.0.v20231107-0834.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>core.commands</artifactId>
+            <version>local</version>
+            <scope>system</scope>
+            <systemPath>${eclipse.plugins}/org.eclipse.core.commands_3.11.200.v20231108-1058.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>core.runtime</artifactId>
+            <version>local</version>
+            <scope>system</scope>
+            <systemPath>${eclipse.plugins}/org.eclipse.core.runtime_3.30.0.v20231102-0719.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui.workbench</artifactId>
+            <version>local</version>
+            <scope>system</scope>
+            <systemPath>${eclipse.plugins}/org.eclipse.ui.workbench_3.131.0.v20231201-0512.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <includes>
+                        <include>de/**</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>deploy-to-eclipse</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                      tofile="C:/Users/maddi/eclipse/java-2023-12/eclipse/dropins/de.checkininfo_1.0.0.jar"
+                                      overwrite="true"/>
+                                <echo message="JAR deployed. Eclipse mit -clean neu starten!"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,27 @@
+Intern
+
+Betroffene Version(en): {VERSION}
+
+Eingecheckt in folgende Version(en): {VERSION}
+
+Falls in TRUNK eingecheckt und Weiterentwicklung / Verhaltensänderung, MENTW vorhanden?: -
+
+Dokumentation angepasst: -
+
+
+
+Externe Patchnote (Ursache, Auswirkungen und Lösung):
+
+{PATCHNOTES}
+
+Tests:
+
+{TESTS}
+
+Wo sind die Tests erfolgt? 
+
+
+Weitere Hinweise:
+
+
+{CHANGELOG}

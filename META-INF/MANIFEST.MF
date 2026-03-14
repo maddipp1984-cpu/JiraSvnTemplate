@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JiraSvnTemplate
+Bundle-SymbolicName: de.checkininfo;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: checkininfo
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.swt,
+ org.eclipse.core.commands,
+ org.tigris.subversion.subclipse.ui;resolution:=optional,
+ org.tigris.subversion.subclipse.core;resolution:=optional,
+ org.tigris.subversion.clientadapter;resolution:=optional
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: de.checkininfo
