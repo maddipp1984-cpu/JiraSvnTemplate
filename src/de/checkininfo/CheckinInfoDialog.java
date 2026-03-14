@@ -26,6 +26,7 @@ public class CheckinInfoDialog extends TitleAreaDialog {
     private Text commentText;
     private Text changelogText;
     private Text testsText;
+    private Text testdestText;
 
     public CheckinInfoDialog(Shell parentShell, String branchName, String comment, String changedFiles) {
         super(parentShell);
@@ -101,6 +102,16 @@ public class CheckinInfoDialog extends TitleAreaDialog {
         testsData.heightHint = 80;
         testsText.setLayoutData(testsData);
 
+        // Testdest (Wo sind die Tests erfolgt?)
+        Label testdestLabel = new Label(container, SWT.NONE);
+        testdestLabel.setText("Testdest:");
+        testdestLabel.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false));
+
+        testdestText = new Text(container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+        GridData testdestData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        testdestData.heightHint = 60;
+        testdestText.setLayoutData(testdestData);
+
         return area;
     }
 
@@ -130,6 +141,7 @@ public class CheckinInfoDialog extends TitleAreaDialog {
             .replace("{VERSION}", branchText.getText())
             .replace("{PATCHNOTES}", commentText.getText())
             .replace("{TESTS}", testsText.getText())
+            .replace("{TESTDEST}", testdestText.getText())
             .replace("{CHANGELOG}", changelogText.getText());
         Clipboard clipboard = new Clipboard(getShell().getDisplay());
         try {

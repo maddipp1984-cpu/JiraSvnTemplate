@@ -1,48 +1,48 @@
 package de.checkininfo;
 
-import java.lang.reflect.Method;
-
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
 
-public class CheckinInfoHandler extends AbstractHandler {
+import java.lang.reflect.Method;
+
+public class CheckinInfoActionDelegate implements IObjectActionDelegate {
+
+    private Shell shell;
+    private ISelection selection;
 
     @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-        Shell shell = HandlerUtil.getActiveShell(event);
-        ISelection selection = HandlerUtil.getActiveMenuSelection(event);
+    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+        shell = targetPart.getSite().getShell();
+    }
 
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
+        this.selection = selection;
+    }
+
+    @Override
+    public void run(IAction action) {
         if (!(selection instanceof IStructuredSelection)) {
-            return null;
+            return;
         }
 
         IStructuredSelection structuredSelection = (IStructuredSelection) selection;
         Object logEntry = structuredSelection.getFirstElement();
 
         if (logEntry == null) {
-            return null;
+            return;
         }
 
         try {
-            // Commit-Kommentar auslesen (verschiedene Methodennamen probieren)
             String comment = tryGetString(logEntry, "getComment", "getMessage");
-
-            // Revision auslesen
             String revision = tryGetRevision(logEntry);
-
-            // Changed paths auslesen
             Object[] changedPaths = tryGetChangedPaths(logEntry);
-
-            // Branch ermitteln
             String branchName = extractBranchName(changedPaths);
-
-            // Geänderte Dateien formatieren
             String changedFiles = formatChangedFiles(changedPaths, revision);
 
             CheckinInfoDialog dialog = new CheckinInfoDialog(shell, branchName, comment, changedFiles);
@@ -51,8 +51,6 @@ public class CheckinInfoHandler extends AbstractHandler {
             MessageDialog.openError(shell, "Checkin Info Fehler",
                 e.getClass().getSimpleName() + ": " + e.getMessage());
         }
-
-        return null;
     }
 
     private String tryGetString(Object obj, String... methodNames) {
@@ -73,7 +71,6 @@ public class CheckinInfoHandler extends AbstractHandler {
         try {
             Object rev = invoke(logEntry, "getRevision");
             if (rev != null) {
-                // SVNRevision.getNumber() oder toString()
                 try {
                     return String.valueOf(invoke(rev, "getNumber"));
                 } catch (Exception e) {
@@ -87,7 +84,6 @@ public class CheckinInfoHandler extends AbstractHandler {
     }
 
     private Object[] tryGetChangedPaths(Object logEntry) {
-        // Verschiedene Methoden probieren
         String[] methods = {"getChangedPaths", "getLogEntryChangePaths"};
         for (String name : methods) {
             try {
@@ -175,11 +171,9 @@ public class CheckinInfoHandler extends AbstractHandler {
             }
             return afterBranches;
         }
-
         if (path.contains("/trunk/") || path.endsWith("/trunk")) {
             return "trunk";
         }
-
         int tagsIdx = path.indexOf("/tags/");
         if (tagsIdx >= 0) {
             String afterTags = path.substring(tagsIdx + "/tags/".length());
@@ -189,7 +183,6 @@ public class CheckinInfoHandler extends AbstractHandler {
             }
             return "tags/" + afterTags;
         }
-
         return "unknown";
     }
 }

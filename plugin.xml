@@ -33,4 +33,20 @@
       </menuContribution>
    </extension>
 
+   <!-- Kontextmenü in der SVN History View (Subclipse) -->
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="de.checkininfo.historyContribution"
+            objectClass="org.tigris.subversion.subclipse.core.history.ILogEntry"
+            adaptable="true">
+         <action
+               id="de.checkininfo.historyAction"
+               label="Checkin Info"
+               class="de.checkininfo.CheckinInfoActionDelegate"
+               menubarPath="additions"
+               enablesFor="+">
+         </action>
+      </objectContribution>
+   </extension>
+
 </plugin>
